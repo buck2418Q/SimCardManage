@@ -11,7 +11,7 @@ namespace Repos.Repository.IRepository
     public interface IAdminRepository
     {
         IQueryable<AdminModel> findAll();
-        void save();
+        int save();
         void remove(int id);
         void update(AdminViewModel admin);
         void create(AdminViewModel admin);

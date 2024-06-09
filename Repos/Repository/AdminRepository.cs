@@ -54,9 +54,9 @@ namespace Repos.Repository
             }
         }
 
-        void IAdminRepository.save()
+        int IAdminRepository.save()
         {
-            _dbContext.SaveChanges();
+            return _dbContext.SaveChanges();
         }
 
         void IAdminRepository.update(AdminViewModel admin)

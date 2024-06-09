@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Repos.Repository.IRepository;
 using SimCardData.Data;
 using SimCardData.Models;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Repos.Repository
 {
-    public class SimPlanRepository:ISimCardPlanRepository
+    public class SimPlanRepository: IPlanRepository
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -23,39 +24,42 @@ namespace Repos.Repository
 
         }
 
-        void ISimCardPlanRepository.create(SimCardPlanViewModel plan)
+        void IPlanRepository.create(SimCardPlanViewModel plan)
         {
-            _dbContext.simCardPlanModels.Add(plan);
+            
+            _dbContext.simCardPlanModels.Add(_mapper.Map<SimCardPlanViewModel, SimCardPlanModel>(plan));
+
+            
         }
 
-        bool ISimCardPlanRepository.exist(int id)
+        //bool IPlanRepository.exist(int id)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //bool IPlanRepository.exists(string plan)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        IQueryable<SimCardPlanModel> IPlanRepository.findAll()
         {
-            throw new NotImplementedException();
+            return _dbContext.Set<SimCardPlanModel>().AsNoTracking();
         }
 
-        bool ISimCardPlanRepository.exists(string plan)
+        //void IPlanRepository.remove(int id)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        int IPlanRepository.save()
         {
-            throw new NotImplementedException();
+            return _dbContext.SaveChanges();
         }
 
-        IQueryable<SimCardPlanModel> ISimCardPlanRepository.findAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        void ISimCardPlanRepository.remove(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        void ISimCardPlanRepository.save()
-        {
-            throw new NotImplementedException();
-        }
-
-        void ISimCardPlanRepository.update(SimCardPlanViewModel plan)
-        {
-            throw new NotImplementedException();
-        }
+        //void IPlanRepository.update(SimCardPlanViewModel plan)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

@@ -24,48 +24,38 @@ namespace Repos.Repository
             _mapper = mapper;
             
         }
-        void IProviderRepository.create(ProviderViewModel provider)
+
+        public async Task<bool> create(ProviderModel provider)
         {
-            ProviderModel providers = _mapper.Map<ProviderViewModel, ProviderModel>(provider);
-            _dbContext.providerModels.Add(providers);
-           
+            var result = await _dbContext.providerModels.AddAsync(provider);
+            return result.State == EntityState.Added;
         }
 
-        bool IProviderRepository.exist(int id)
+        public  IQueryable<ProviderModel> findAll()
         {
-            return _dbContext.providerModels.Any(provider => provider.Id == id);
+            return  _dbContext.Set<ProviderModel>().AsNoTracking();
         }
 
-        bool IProviderRepository.exists(string provider)
+        public async Task<ProviderModel> GetUnique(int id)
         {
-            return _dbContext.providerModels.Any(pro => pro.Name == provider);
-
+            return await _dbContext.providerModels.FirstOrDefaultAsync(s => s.Id == id)??new ProviderModel();
         }
 
-        IQueryable<ProviderModel> IProviderRepository.findAll()
+        public async Task<bool> GetUnique(string name)
         {
-            return _dbContext.Set<ProviderModel>().AsNoTracking();
+            return await _dbContext.providerModels.FirstOrDefaultAsync(s => s.Name == name)!=null?true:false;
         }
 
-        void IProviderRepository.remove(int id)
+        
+        public async Task save()
         {
-            var providerEntity = _dbContext.providerModels.Find(id);
-            if (providerEntity != null)
-            {
-                _dbContext.providerModels.Remove(providerEntity);
-
-            }
-
+            await _dbContext.SaveChangesAsync();
         }
 
-        void IProviderRepository.save()
+       bool IProviderRepository.remove(ProviderModel provider)
         {
-            _dbContext.SaveChanges();
-        }
-
-        void IProviderRepository.update(ProviderModel provider)
-        {
-            _dbContext.providerModels.Update(provider);
+             var result = _dbContext.providerModels.Remove(provider);
+            return result.State == EntityState.Deleted;
         }
     }
 }

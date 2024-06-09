@@ -16,8 +16,8 @@ builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
 
 builder.Services.AddScoped<IProviderRepository, ProviderRepository>();
 
-//builder.Services.AddScoped<ISimCardPlanRepository, ISimCardPlanRepository>();
-//builder.Services.AddScoped<ISimRepository, ISimRepository>();
+builder.Services.AddScoped<IPlanRepository, SimPlanRepository>();
+builder.Services.AddScoped<ISimRepository, SimCardRepository>();
 
 builder.Services.AddScoped<IUserRepository,UserRepository>();
 
@@ -26,7 +26,7 @@ builder.Services.AddScoped<IUserRepository,UserRepository>();
 
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("conectionToDb")) );
-builder.Services.AddControllers();
+builder.Services.AddControllers().assnew();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

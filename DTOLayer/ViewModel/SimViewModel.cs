@@ -18,8 +18,7 @@ namespace SimCardData.Models
        
         public bool IsActiveUser { get; set; } = true;
        
-       
-        public int userModelId { get; set; } 
+   
 
         public int SimCardPlanModelId { get; set; }
     }

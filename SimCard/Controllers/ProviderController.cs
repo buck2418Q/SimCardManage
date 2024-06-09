@@ -1,41 +1,51 @@
-﻿using DTOLayer.ViewModel;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Azure;
+using DTOLayer.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Repos.Repository.IRepository;
+using SimCardData.Models;
 
 namespace SimCard.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProviderController : ControllerBase
+    public class ProviderController(IProviderRepository repository, IMapper mapper) : ControllerBase
     {
-        private readonly IProviderRepository _repository;
-
-        public ProviderController(IProviderRepository repository)
-        {
-            _repository = repository;
-        }
         [HttpGet]
-        public IQueryable Get()
-        {
-            return _repository.findAll();
-        }
+        public IQueryable Get() => repository.findAll();
+
         [HttpPost]
-        public IActionResult Add([FromBody]ProviderViewModel provider)
+        public async Task<IActionResult> Add([FromBody] ProviderViewModel provider)
         {
             var p = provider.Name;
 
-            if(provider.Name != "" ) 
+            if (p == "") return BadRequest("Enter details");
+            if (p == null)
             {
-                if(p == null)
-                {
-                    return BadRequest("null here");
-                }
-                if (_repository.exists(p)) return BadRequest("User alredy exist");
-                _repository.create(provider);
-                _repository.save();
+                return BadRequest("null here");
             }
+            if (await repository.GetUnique(p)) return BadRequest("User already exist");
+            await repository.create(mapper.Map<ProviderModel>(provider));
+            await repository.save();
             return BadRequest("Enter details");
         }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<ProviderViewModel>> Update(int id, [FromBody] ProviderViewModel viewModel)
+        {
+            var entity = await repository.GetUnique(id);
+            mapper.Map(viewModel, entity);
+            await repository.save();
+            return Ok(await repository.GetUnique(id));
+        }
+
+        [HttpPatch("id:int")]
+        public async Task<ActionResult<ProviderViewModel>> Patch(int id,[FromBody] JsonPatchDocument<ProviderViewModel> viewModel)
+        {
+            ProviderModel model = await repository.GetUnique(id);
+            viewModel.applyto
+
+        }
+
     }
 }

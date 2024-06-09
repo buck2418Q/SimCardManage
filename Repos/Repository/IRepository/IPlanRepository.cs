@@ -1,5 +1,4 @@
-﻿using DTOLayer.ViewModel;
-using SimCardData.Models;
+﻿using SimCardData.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +7,17 @@ using System.Threading.Tasks;
 
 namespace Repos.Repository.IRepository
 {
-    public interface ISimCardPlanRepository
+    public interface IPlanRepository
     {
         IQueryable<SimCardPlanModel> findAll();
-        void save();
-        void remove(int id);
-        void update(SimCardPlanViewModel plan);
+        int save();
         void create(SimCardPlanViewModel plan);
-        bool exist(int id);
-        bool exists(string plan);
+
+        //implenet them later
+        //void remove(int id);
+        //void update(SimCardPlanViewModel plan);
+
+        //bool exist(int id);
+        //bool exists(string plan);
     }
 }

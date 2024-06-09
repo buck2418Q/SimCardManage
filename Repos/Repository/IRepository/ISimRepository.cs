@@ -11,7 +11,7 @@ namespace Repos.Repository.IRepository
     public interface ISimRepository
     {
         IQueryable<SimModel> findAll();
-        void save();
+        int save();
         void remove(int id);
         void update(SimModel sim);
         void create(SimViewModel sim);
