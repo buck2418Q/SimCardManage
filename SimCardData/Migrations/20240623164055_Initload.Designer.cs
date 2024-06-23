@@ -11,7 +11,7 @@ using SimCardData.Data;
 namespace SimCardData.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240422114545_Initload")]
+    [Migration("20240623164055_Initload")]
     partial class Initload
     {
         /// <inheritdoc />
@@ -19,7 +19,7 @@ namespace SimCardData.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);

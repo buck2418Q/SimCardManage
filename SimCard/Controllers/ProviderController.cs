@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Azure;
 using DTOLayer.ViewModel;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Repos.Repository.IRepository;
 using SimCardData.Models;
@@ -43,7 +44,8 @@ namespace SimCard.Controllers
         public async Task<ActionResult<ProviderViewModel>> Patch(int id,[FromBody] JsonPatchDocument<ProviderViewModel> viewModel)
         {
             ProviderModel model = await repository.GetUnique(id);
-            viewModel.applyto
+            viewModel.ApplyTo(mapper.Map<ProviderViewModel>(model));
+            return mapper.Map<ProviderViewModel>(model);
 
         }
 
